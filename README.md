@@ -16,8 +16,6 @@ mvn install:install-file -Dfile="%MEMPROCFS_HOME%\vmm.jar" -DgroupId=vmm -Dartif
 
     MEMPROCFS_HOME = Path to memprocfs. This is copied to the target directory as part of the build process.
 
-    LAUNCH4J_JRE_PATH = Relative path to the JRE that will be bundled with the executable. If left blank then Launch4J will search for an installed JRE on the user's system at runtime.
-
 ## To build
 
 ```

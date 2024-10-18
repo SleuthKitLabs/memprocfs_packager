@@ -137,7 +137,7 @@
                             <manifest>${project.basedir}/manifest.xml</manifest>
 
                             <jre>
-                                <path>${env.LAUNCH4J_JRE_PATH?:}</path>
+                                <path>../../jre;%JAVA_HOME%</path>
                                 <opts>--enable-native-access=ALL-UNNAMED</opts>
                             </jre>
                             <versionInfo>
