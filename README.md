@@ -9,7 +9,7 @@ The files that will be included in the output are defined in `files_to_collect.t
 Run the following command to install the vmm.jar file to your local repository. Ensure the file path is correct based on your system setup.
 
 ```
-mvn install:install-file -Dfile="%MEMPROCFS_HOME%\vmm.jar" -DgroupId=vmm -DartifactId=vmmjava -Dversion=5.12.0 -Dpackaging=jar
+mvn install:install-file -Dfile="%MEMPROCFS_HOME%\vmm.jar" -DgroupId=vmm -DartifactId=vmmjava -Dversion=5.12.5 -Dpackaging=jar
 ```
 
 ## Environment Variables Required to Build
