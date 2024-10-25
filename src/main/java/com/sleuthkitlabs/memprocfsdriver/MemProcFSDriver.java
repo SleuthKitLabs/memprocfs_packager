@@ -42,18 +42,21 @@ public class MemProcFSDriver {
 
     private final String yaraRulesPath;
 
+    private final List<String> additionalOptions;
+
     // Maintain a set of file paths that have already been added to the zip
     private final Set<String> addedEntries = new HashSet<>();
                 
     private final String strPathToNativeBinaries;
     private IVmm vmm;
     
-    public MemProcFSDriver(String imagePath, OutputStream outputStream, String strPathToNativeBinaries, String yaraRulesPath) {
+    public MemProcFSDriver(String imagePath, OutputStream outputStream, String strPathToNativeBinaries, String yaraRulesPath, List<String> additionalOptions) {
         
         this.imagePath = imagePath;
         this.strPathToNativeBinaries = strPathToNativeBinaries;
         this.yaraRulesPath = yaraRulesPath;
-        
+        this.additionalOptions = additionalOptions;
+
         if (Objects.nonNull(outputStream)) {
             this.outputstream = outputStream;
         } else {
@@ -73,6 +76,10 @@ public class MemProcFSDriver {
 
             if (yaraRulesPath != null && !yaraRulesPath.isBlank()) {
                 argvMemProcFS.addAll(List.of("-forensic-yara-rules", yaraRulesPath));
+            }
+            
+            if (additionalOptions != null) {
+                argvMemProcFS.addAll(additionalOptions);
             }
 
             vmm = IVmm.initializeVmm(strPathToNativeBinaries, argvMemProcFS.toArray(new String[0]));

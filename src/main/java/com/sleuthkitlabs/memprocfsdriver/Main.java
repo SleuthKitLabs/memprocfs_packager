@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.apache.commons.cli.CommandLine;
@@ -51,6 +53,13 @@ public class Main {
         Option yaraRules = new Option("y", "yara-rules", true, "yara rules file");
         allOptions.addOption(yaraRules);
         visibleOptions.addOption(yaraRules);
+
+        Option acceptElasticLicense = Option.builder()
+            .longOpt("license-accept-elastic-license-2-0")
+            .desc("Passes the -license-accept-elastic-license-2-0 option to MemProcFS")
+            .hasArg(false)
+            .build();
+        allOptions.addOption(acceptElasticLicense); // This option is hidden, not shown in help.
 
         Option memProcFSOpt = new Option("m", "memprocfs", true, "path to MemProcFS");
         allOptions.addOption(memProcFSOpt); // This option is hidden, not shown in help.
@@ -123,11 +132,16 @@ public class Main {
                 LOGGER.warn("Yara rules file not found: " + _yaraRulesPath);
             }
         }
+
+        List<String> additionalOptions = new ArrayList<>();
+        if (cmd.hasOption("license-accept-elastic-license-2-0")) {
+            additionalOptions.add("-license-accept-elastic-license-2-0");
+        }
         
         LOGGER.debug("Starting processing image:" + inputFilePath);
 
         try (FileOutputStream outputStream = new FileOutputStream(outputFilePath)) {
-            MemProcFSDriver driver = new MemProcFSDriver(inputFilePath, outputStream, strPathToNativeBinaries, yaraRulesPath);
+            MemProcFSDriver driver = new MemProcFSDriver(inputFilePath, outputStream, strPathToNativeBinaries, yaraRulesPath, additionalOptions);
             driver.run();
         } catch (IOException ex) {
             System.err.println("Error: " + ex.getMessage());
