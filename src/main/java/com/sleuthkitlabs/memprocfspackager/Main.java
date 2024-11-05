@@ -1,4 +1,4 @@
-package com.sleuthkitlabs.memprocfsdriver;
+package com.sleuthkitlabs.memprocfspackager;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -72,7 +72,7 @@ public class Main {
              cmd = parser.parse(allOptions, args);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
-            formatter.printHelp("memprocfs_driver", visibleOptions);
+            formatter.printHelp("memprocfs_packager", visibleOptions);
 
             System.exit(1);
         }
@@ -141,8 +141,8 @@ public class Main {
         LOGGER.debug("Starting processing image:" + inputFilePath);
 
         try (FileOutputStream outputStream = new FileOutputStream(outputFilePath)) {
-            MemProcFSDriver driver = new MemProcFSDriver(inputFilePath, outputStream, strPathToNativeBinaries, yaraRulesPath, additionalOptions);
-            driver.run();
+            MemProcFSPackager packager = new MemProcFSPackager(inputFilePath, outputStream, strPathToNativeBinaries, yaraRulesPath, additionalOptions);
+            packager.run();
         } catch (IOException ex) {
             System.err.println("Error: " + ex.getMessage());
             LOGGER.error("Error writing to file", ex);

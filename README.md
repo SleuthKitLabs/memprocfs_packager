@@ -1,4 +1,4 @@
-# MemProcFS Driver
+# MemProcFS Packager
 
 Wrapper driver program to zip up the interesting artifacts from a MemProcFS execution.
 
@@ -37,5 +37,5 @@ mvn exec:java -Dexec.args="-i E:\test_data\memory_images\stuxnet.img -o stuxnet.
 or from the `target\bin` directory:
 
 ```
-memprocfs_driver.exe -i E:\test_data\memory_images\stuxnet.img -o stuxnet.zip
+memprocfs_packager.exe -i E:\test_data\memory_images\stuxnet.img -o stuxnet.zip
 ```

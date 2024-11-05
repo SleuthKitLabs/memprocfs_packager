@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sleuthkitlabs</groupId>
-    <artifactId>memprocfs_driver</artifactId>
+    <artifactId>memprocfs_packager</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
-        <exec.mainClass>com.sleuthkitlabs.memprocfsdriver.Main</exec.mainClass>
+        <exec.mainClass>com.sleuthkitlabs.memprocfspackager.Main</exec.mainClass>
     </properties>
     
 
@@ -59,7 +59,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.sleuthkitlabs.memprocfsdriver.Main</mainClass>
+                            <mainClass>com.sleuthkitlabs.memprocfspackager.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -106,7 +106,7 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.sleuthkitlabs.memprocfsdriver.Main</mainClass>
+                                    <mainClass>com.sleuthkitlabs.memprocfspackager.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -128,9 +128,9 @@
                         <configuration>
                             <headerType>console</headerType>
                             <jar>${project.build.directory}/${project.artifactId}-${project.version}.jar</jar>
-                            <outfile>${project.build.directory}/bin/memprocfs_driver.exe</outfile>
+                            <outfile>${project.build.directory}/bin/memprocfs_packager.exe</outfile>
                             <classPath>
-                                <mainClass>com.sleuthkitlabs.memprocfsdriver.Main</mainClass>
+                                <mainClass>com.sleuthkitlabs.memprocfspackager.Main</mainClass>
                                 <preCp>anything</preCp>
                             </classPath>
                             <!--<icon>${project.basedir}/icon.ico</icon>-->
@@ -150,7 +150,7 @@
                                 <productName>${project.name}</productName>
                                 <companyName>Sleuth Kit Labs</companyName>
                                 <internalName>Sleuth Kit Labs</internalName>
-                                <originalFilename>memprocfs_driver.exe</originalFilename>
+                                <originalFilename>memprocfs_packager.exe</originalFilename>
                             </versionInfo>
                         </configuration>
                     </execution>
@@ -161,9 +161,9 @@
     </build>
     
     <!-- More Project Information -->
-    <name>MemProcFS Driver</name>
+    <name>MemProcFS Packager</name>
     <inceptionYear>2024</inceptionYear>
-    <description>MemProcFS Driver</description>
+    <description>MemProcFS Packager</description>
     <organization>
         <name>Sleuth Kit Labs</name>
     </organization>

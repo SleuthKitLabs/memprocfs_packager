@@ -1,4 +1,4 @@
-package com.sleuthkitlabs.memprocfsdriver;
+package com.sleuthkitlabs.memprocfspackager;
 
 import java.io.IOException;
 import java.io.InputStream;

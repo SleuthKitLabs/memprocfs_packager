@@ -1,5 +1,5 @@
 <configuration debug="false">
-    <property name="LOG_DIR" value="C:/ProgramData/memprocfs_driver/logs"/>
+    <property name="LOG_DIR" value="C:/ProgramData/memprocfs_packager/logs"/>
     
 	<!-- Disable Logback's internal initialization messages so they are not displayed during command line execution -->
 	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
@@ -7,11 +7,11 @@
     <logger name="org.slf4j.impl.StaticLoggerBinder" level="OFF" />
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${LOG_DIR}/memprocfs_driver.log</file>
+        <file>${LOG_DIR}/memprocfs_packager.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover. Make sure the path matches the one in the file element or else
              the rollover logs are placed in the working directory. -->
-            <fileNamePattern>${LOG_DIR}/memprocfs_driver.log_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_DIR}/memprocfs_packager.log_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
 
             <timeBasedFileNamingAndTriggeringPolicy
                 class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">

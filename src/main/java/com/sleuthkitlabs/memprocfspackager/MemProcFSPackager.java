@@ -1,4 +1,4 @@
-package com.sleuthkitlabs.memprocfsdriver;
+package com.sleuthkitlabs.memprocfspackager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,9 +32,9 @@ import vmm.entry.Vmm_VfsListEntry;
 /**
  *
  */
-public class MemProcFSDriver {
+public class MemProcFSPackager {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MemProcFSDriver.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MemProcFSPackager.class);
 
     private final String imagePath;
         
@@ -50,7 +50,7 @@ public class MemProcFSDriver {
     private final String strPathToNativeBinaries;
     private IVmm vmm;
     
-    public MemProcFSDriver(String imagePath, OutputStream outputStream, String strPathToNativeBinaries, String yaraRulesPath, List<String> additionalOptions) {
+    public MemProcFSPackager(String imagePath, OutputStream outputStream, String strPathToNativeBinaries, String yaraRulesPath, List<String> additionalOptions) {
         
         this.imagePath = imagePath;
         this.strPathToNativeBinaries = strPathToNativeBinaries;
