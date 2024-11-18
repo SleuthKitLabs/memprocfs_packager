@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.sleuthkitlabs</groupId>
+    <artifactId>memprocfs_packager</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+        <exec.mainClass>com.sleuthkitlabs.memprocfspackager.Main</exec.mainClass>
+    </properties>
+    
+
+    <dependencies>
+        
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>5.15.0</version>
+        </dependency>
+           
+        <dependency>
+            <groupId>vmm</groupId>
+            <artifactId>vmmjava</artifactId>
+            <version>5.12.5</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>1.9.0</version>
+        </dependency>
+        
+    </dependencies>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.sleuthkitlabs.memprocfspackager.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-memprocfs</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <copy todir="${basedir}/target/bin/memprocfs">
+                                    <fileset dir="${env.MEMPROCFS_HOME}">
+                                        <include name="**/*.dll"/>
+                                        <include name="info.db"/>
+                                        <include name="**/*.txt"/>
+                                        <exclude name="python/**"/>
+                                    </fileset>
+                                </copy>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.sleuthkitlabs.memprocfspackager.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <version>2.5.1</version>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>console</headerType>
+                            <jar>${project.build.directory}/${project.artifactId}-${project.version}.jar</jar>
+                            <outfile>${project.build.directory}/bin/memprocfs_packager.exe</outfile>
+                            <classPath>
+                                <mainClass>com.sleuthkitlabs.memprocfspackager.Main</mainClass>
+                                <preCp>anything</preCp>
+                            </classPath>
+                            <!--<icon>${project.basedir}/icon.ico</icon>-->
+                            <manifest>${project.basedir}/manifest.xml</manifest>
+
+                            <jre>
+                                <path>../../jre;%JAVA_HOME%</path>
+                                <opts>--enable-native-access=ALL-UNNAMED</opts>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>1.0.0.9</fileVersion>
+                                <txtFileVersion>${project.version}</txtFileVersion>
+                                <fileDescription>${project.name}</fileDescription>
+                                <copyright>2024 Sleuth Kit Labs</copyright>
+                                <productVersion>1.0.0.0</productVersion>
+                                <txtProductVersion>1.0.0.0</txtProductVersion>
+                                <productName>${project.name}</productName>
+                                <companyName>Sleuth Kit Labs</companyName>
+                                <internalName>Sleuth Kit Labs</internalName>
+                                <originalFilename>memprocfs_packager.exe</originalFilename>
+                            </versionInfo>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+     
+        </plugins>
+    </build>
+    
+    <!-- More Project Information -->
+    <name>MemProcFS Packager</name>
+    <inceptionYear>2024</inceptionYear>
+    <description>MemProcFS Packager</description>
+    <organization>
+        <name>Sleuth Kit Labs</name>
+    </organization>
+    
+</project>

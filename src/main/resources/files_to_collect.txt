@@ -1,0 +1,31 @@
+## Users ##
+\sys\users\users.txt
+\pid\*\token\sid-all.txt
+
+## Processes ##
+\forensic\csv\process.csv
+\forensic\prefetch\00-prefetch-summary.txt
+
+## Triggered Tasks ##
+\forensic\csv\services.csv
+\forensic\csv\tasks.csv
+\sys\drivers\drivers.txt
+
+## Listening Ports / Active Connections ##
+\forensic\csv\net.csv
+
+## Files ##
+\forensic\ntfs\ntfs_files.txt
+
+## Host Info ##
+\sys\sysinfo\sysinfo.txt
+
+## Web Artifacts ##
+\forensic\web\web.txt
+
+## Suspicious Activity ##
+\forensic\yara\result.txt
+\forensic\csv\findevil.csv
+
+## Other ##
+\registry\HKLM\SYSTEM\ControlSet001\Enum\USB\**

@@ -1,0 +1,37 @@
+<configuration debug="false">
+    <property name="LOG_DIR" value="C:/ProgramData/memprocfs_packager/logs"/>
+    
+	<!-- Disable Logback's internal initialization messages so they are not displayed during command line execution -->
+	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+    <logger name="ch.qos.logback" level="OFF" />
+    <logger name="org.slf4j.impl.StaticLoggerBinder" level="OFF" />
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_DIR}/memprocfs_packager.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover. Make sure the path matches the one in the file element or else
+             the rollover logs are placed in the working directory. -->
+            <fileNamePattern>${LOG_DIR}/memprocfs_packager.log_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+
+            <timeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+
+            <!-- each file should be at most 5MB, keep 20 days worth of history, but at most 1GB -->
+            <maxFileSize>5MB</maxFileSize>
+            <maxHistory>20</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+
+        </rollingPolicy>
+
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %-4relative %-5level [%thread] %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
