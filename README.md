@@ -1,8 +1,11 @@
 # MemProcFS Packager
 
-Wrapper driver program to zip up the interesting artifacts from a MemProcFS execution.
+This program uses the [MemProcFS](https://github.com/ufrisk/MemProcFS) library to:
+* Load a memory image
+* Extract key files from the virtual file system
+* Save the files to a ZIP file
 
-The files that will be included in the output are defined in `files_to_collect.txt`
+The files that will be included in the ZIP are defined in `files_to_collect.txt`
 
 ## Install the vmm.jar File into Local Maven Repository
 
