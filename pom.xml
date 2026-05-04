@@ -23,7 +23,7 @@
         <dependency>
             <groupId>vmm</groupId>
             <artifactId>vmmjava</artifactId>
-            <version>5.12.5</version>
+            <version>5.17.6</version>
         </dependency>
         
         <dependency>
@@ -160,6 +160,81 @@
         </plugins>
     </build>
     
+    <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <!-- Suppress plugins that are not needed when producing a native image -->
+                    <plugin>
+                        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                        <artifactId>launch4j-maven-plugin</artifactId>
+                        <version>2.5.1</version>
+                        <executions>
+                            <execution>
+                                <id>l4j-clui</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.6.0</version>
+                        <executions>
+                            <execution>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>0.11.4</version>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <imageName>memprocfs_packager</imageName>
+                            <mainClass>com.sleuthkitlabs.memprocfspackager.Main</mainClass>
+                            <outputDirectory>${project.build.directory}/bin</outputDirectory>
+                            <metadataRepository>
+                                <!-- Pull community-maintained GraalVM hints for JNA, logback, commons-cli -->
+                                <enabled>true</enabled>
+                            </metadataRepository>
+                            <buildArgs>
+                                <buildArg>--no-fallback</buildArg>
+                                <!-- Optimize for binary size rather than execution speed (-O2 default).
+                                     Safe tradeoff: this tool is I/O-bound waiting on MemProcFS. -->
+                                <buildArg>-Os</buildArg>
+                                <!-- Serial GC has a much smaller runtime footprint than G1 (the GraalVM default).
+                                     Appropriate for a short-lived CLI tool with low, temporary memory pressure. -->
+                                <buildArg>--gc=serial</buildArg>
+                                <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                                <!-- JNA calls System.load() which is a restricted method in newer Java versions -->
+                                <buildArg>--enable-native-access=ALL-UNNAMED</buildArg>
+                                <!-- Include legacy charsets (e.g. Cp1252) that JNA reads from native.encoding -->
+                                <buildArg>-H:+AddAllCharsets</buildArg>
+                                <!-- JNA loads native libraries and sets up callbacks at runtime;
+                                     must not be initialized at build time or callback state will be invalid -->
+                                <buildArg>--initialize-at-run-time=com.sun.jna,vmm</buildArg>
+                            </buildArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <!-- More Project Information -->
     <name>MemProcFS Packager</name>
     <inceptionYear>2024</inceptionYear>
