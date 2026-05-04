@@ -48,7 +48,7 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         
         Options allOptions = new Options();
-        Options visibleOptions = new Options(); // These are displayed in help meny
+        Options visibleOptions = new Options(); // These are displayed in help menu
 
         Option input = new Option("i", "input", true, "input file path");
         input.setRequired(true);
