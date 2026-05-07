@@ -42,11 +42,11 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class Main {
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-    
+
+    private static final String DEFAULT_LOG_DIR = "C:/ProgramData/memprocfs_packager/logs";
+
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        
+
         Options allOptions = new Options();
         Options visibleOptions = new Options(); // These are displayed in help menu
 
@@ -82,6 +82,13 @@ public class Main {
         Option memProcFSOpt = new Option("m", "memprocfs", true, "path to MemProcFS");
         allOptions.addOption(memProcFSOpt); // This option is hidden, not shown in help.
 
+        Option logDirOpt = Option.builder()
+            .longOpt("log-dir")
+            .desc("directory to write log files to")
+            .hasArg(true)
+            .build();
+        allOptions.addOption(logDirOpt); // This option is hidden, not shown in help.
+
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
         CommandLine cmd = null;
@@ -94,7 +101,14 @@ public class Main {
 
             System.exit(1);
         }
-        
+
+        String logDir = cmd.hasOption("log-dir")
+            ? cmd.getOptionValue("log-dir")
+            : DEFAULT_LOG_DIR;
+        System.setProperty("LOG_DIR", logDir);
+
+        Logger logger = LoggerFactory.getLogger(Main.class);
+
         String inputFilePath = cmd.getOptionValue("input");
         String outputFilePath = cmd.getOptionValue("output");
 
@@ -147,7 +161,7 @@ public class Main {
                 yaraRulesPath = _yaraRulesPath;
             } else {
                 System.err.println("Yara rules file not found: " + _yaraRulesPath);
-                LOGGER.warn("Yara rules file not found: " + _yaraRulesPath);
+                logger.warn("Yara rules file not found: {}", _yaraRulesPath);
             }
         }
 
@@ -156,19 +170,19 @@ public class Main {
             additionalOptions.add("-license-accept-elastic-license-2-0");
         }
         
-        LOGGER.debug("Starting processing image:" + inputFilePath);
+        logger.debug("Starting processing image: {}", inputFilePath);
 
         try (FileOutputStream outputStream = new FileOutputStream(outputFilePath)) {
             MemProcFSPackager packager = new MemProcFSPackager(inputFilePath, outputStream, strPathToNativeBinaries, yaraRulesPath, additionalOptions);
             packager.run();
         } catch (IOException ex) {
             System.err.println("Error: " + ex.getMessage());
-            LOGGER.error("Error writing to file", ex);
+            logger.error("Error writing to file", ex);
 
             System.exit(1);
         }
 
-        LOGGER.debug("Processing completed. Output written to: " + outputFilePath);
+        logger.debug("Processing completed. Output written to: {}", outputFilePath);
         System.out.println("Processing completed. Output written to: " + outputFilePath);
     }
 }
