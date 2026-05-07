@@ -1,5 +1,4 @@
 <configuration debug="false">
-    <property name="LOG_DIR" value="C:/ProgramData/memprocfs_packager/logs"/>
     
 	<!-- Disable Logback's internal initialization messages so they are not displayed during command line execution -->
 	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
