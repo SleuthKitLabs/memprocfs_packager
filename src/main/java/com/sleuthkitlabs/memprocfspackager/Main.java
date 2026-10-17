@@ -45,6 +45,11 @@ public class Main {
 
     private static final String DEFAULT_LOG_DIR = "C:/ProgramData/memprocfs_packager/logs";
 
+    // MemProcFS's native library, as named in its release for this OS
+    private static final String VMM_LIBRARY = System.getProperty("os.name", "").startsWith("Windows")
+            ? "vmm.dll"
+            : "vmm.so";
+
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
         Options allOptions = new Options();
@@ -119,8 +124,8 @@ public class Main {
 
         // check that path exists
         Path memprocfsPath = Paths.get(strPathToNativeBinaries);
-        Path dllPath = memprocfsPath.resolve("vmm.dll");
-        if (!Files.isDirectory(memprocfsPath) || !Files.exists(dllPath)) {
+        Path vmmLibraryPath = memprocfsPath.resolve(VMM_LIBRARY);
+        if (!Files.isDirectory(memprocfsPath) || !Files.exists(vmmLibraryPath)) {
             System.err.println("Error: MemProcFS not found at " + memprocfsPath.toAbsolutePath().toString());
             System.exit(1);
         }
